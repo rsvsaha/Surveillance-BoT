@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript">
+	//var ctr=0;
+function SENSOR_VALUE(){
+ // document.getElementById("FRONT").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("BACK").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("LEFT").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("RIGHT").innerHTML ="GAP:"+ctr+"cm";
+ // ctr+=1;
+  //cosnole.log("HELLO");
+  //document.getElementById("FRONT").innerHTML="FORWARD";
+  var request=new XMLHttpRequest();
+  nocache ="&nocache="+ Math.random() * 1000000;
+      request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+// Typical action to be performed when the document is ready:
+        if(this.responseText!=null)
+        {var mydata=this.responseText;
+        var sensorvalue=mydata.split(",");
+        document.getElementById("FRONT").innerHTML ="GAP:"+sensorvalue[0]+"cm";
+        document.getElementById("BACK").innerHTML ="GAP:"+sensorvalue[1]+"cm";
+        document.getElementById("LEFT").innerHTML ="GAP:"+sensorvalue[2]+"cm";
+        document.getElementById("RIGHT").innerHTML ="GAP:"+sensorvalue[3]+"cm";
+      }
+      }
+      };
+      request.open("GET", "sensorval"+nocache, true);
+  request.send();
+  setTimeout("SENSOR_VALUE()",1000);
+}
+      
+        function FORWARD(){
+        //document.getElementById("FRONT").innerHTML="FORWARD";
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            request.open("GET", "forward"+nocache, true);
+            request.send();
+            }
+        }
+
+        function BACKWARD(){
+        //document.getElementById("BACK").innerHTML="BACKWARD";
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            request.open("GET", "backward"+nocache, true);
+            request.send();
+            }
+        }
+        
+
+        function LEFT(){
+        //document.getElementById("LEFT").innerHTML="LEFTWARD";
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            request.open("GET", "left"+nocache, true);
+            request.send();
+            }
+        }
+        function RIGHT(){
+        //document.getElementById("RIGHT").innerHTML="RIGHTWARD";
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            request.open("GET", "right"+nocache, true);
+            request.send();
+          }
+        }
+
+
+</script>
+
+<head>
+	<title>BOT SERVER CONTROL</title>
+</head>
+
+<body onload="SENSOR_VALUE();">
+
+<div style="position:absolute;left:150px">
+<h1> BOT CONTROL </h1>
+</div> 
+
+<div style="position:absolute; top: 100px;left: 200px;">
+<p id="FRONT">   GAP:</p>
+<p><input type="button" onclick="FORWARD();" value="FORWARD"></p>
+</div>
+
+<div style="position:absolute; top: 250px;">
+<p id="LEFT">    GAP:</p>
+<p><input type="button" onclick="LEFT();" value="LEFT"></p>
+</div>
+
+<div style="position:absolute; top: 250px; left: 400px;">
+<p id="RIGHT">   GAP:</p>
+<p><input type="button" onclick="RIGHT();" value="RIGHT"></p>
+</div>
+
+<div style="position:absolute; top: 400px; left: 200px;">
+<p id="BACK">    GAP:</p>
+<p><input type="button" onclick="BACKWARD();"value="BACKWARD"></p>
+</div>
+
+</body>
+</html>
