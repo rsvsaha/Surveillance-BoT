@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript">
+	
+
+	var delay_time=5000; //CONTROLS THE DELAY FOR BUTTON DEBOUNCE
+	var LeftFlag=false;
+	var RightFlag=false;
+	var ForwardFlag=false;
+	var BackwardFlag=false;
+
+function HUMID_TEMP(){
+var request=new XMLHttpRequest();
+  nocache ="&nocache="+ Math.random() * 1000000;
+      request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+// Typical action to be performed when the document is ready:
+        if(this.responseText!=null)
+        {var mydata=this.responseText;
+        var sensorvalue=mydata.split(",");
+        
+       document.getElementById("humid").innerHTML ="RELATIVE HUMIDITY:"+sensorvalue[0]+"%";
+       document.getElementById("temp").innerHTML ="TEMPERATURE(Celsius):"+sensorvalue[1]; 
+       
+      }
+      }
+      };
+      request.open("GET", "temp_humid"+nocache, true);
+  request.send();
+  setTimeout("HUMID_TEMP()",30000);
+
+
+}
+
+
+
+var delay_time=5000; //CONTROLS THE DELAY FOR BUTTON DEBOUNCE
+    //var ctr=0;
+function SENSOR_VALUE(){
+ // document.getElementById("FRONT").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("BACK").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("LEFT").innerHTML ="GAP:"+ctr+"cm";
+ // document.getElementById("RIGHT").innerHTML ="GAP:"+ctr+"cm";
+ // ctr+=1;
+  //cosnole.log("HELLO");
+  //document.getElementById("FRONT").innerHTML="FORWARD";
+  var request=new XMLHttpRequest();
+  nocache ="&nocache="+ Math.random() * 1000000;
+      request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+// Typical action to be performed when the document is ready:
+        if(this.responseText!=null)
+        {var mydata=this.responseText;
+        var sensorvalue=mydata.split(",");
+        if(sensorvalue[0]<30)
+            {document.getElementById("FRONT").innerHTML ="GAP:"+sensorvalue[0]+"cm";
+        document.getElementById("FRONT").style.color='red';}
+        else
+            {document.getElementById("FRONT").innerHTML ="GAP:"+sensorvalue[0]+"cm";
+          document.getElementById("FRONT").style.color='green';}
+        if(sensorvalue[1]<30)
+            {document.getElementById("BACK").innerHTML ="GAP:"+sensorvalue[1]+"cm";
+            document.getElementById("BACK").style.color='red';}
+        else
+            {document.getElementById("BACK").innerHTML ="GAP:"+sensorvalue[1]+"cm";
+        document.getElementById("BACK").style.color='green';}
+       
+
+       // document.getElementById("LEFT").innerHTML ="GAP:"+sensorvalue[2]+"cm";
+       // document.getElementById("RIGHT").innerHTML ="GAP:"+sensorvalue[3]+"cm";
+      }
+      }
+      };
+      request.open("GET", "sensorval"+nocache, true);
+  request.send();
+  setTimeout("SENSOR_VALUE()",15000);
+
+
+}
+      
+        function FORWARD(){
+        //document.getElementById("FRONT").innerHTML="FORWARD";
+        SENSOR_VALUE(); //GET THE SENSOR VALUE FIRST
+        
+
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
+              if(this.responseText!=null)
+            {document.getElementById("STATUS").innerHTML="STATUS: "+this.responseText;}
+            }
+            };
+            request.open("GET", "forward"+nocache, true);
+            request.send();
+            setTimeout("delay()",delay_time);
+        }
+
+        function BACKWARD(){
+        //document.getElementById("BACK").innerHTML="BACKWARD";
+        SENSOR_VALUE(); //GET THE SENSOR VALUE FIRST
+
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              if(this.responseText!=null)
+            {document.getElementById("STATUS").innerHTML="STATUS: "+this.responseText;}
+            }
+            };
+            request.open("GET", "backward"+nocache, true);
+            request.send();
+            setTimeout("delay()",delay_time);
+        }
+        
+
+        function LEFT(){
+        //document.getElementById("LEFT").innerHTML="LEFTWARD";
+        SENSOR_VALUE(); //GET THE SENSOR VALUE FIRST
+
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              if(this.responseText!=null)
+            {document.getElementById("STATUS").innerHTML="STATUS: "+this.responseText;}
+            }
+
+            };
+            request.open("GET", "left"+nocache, true);
+            request.send();
+            setTimeout("delay()",delay_time);
+        }
+        function RIGHT(){
+        //document.getElementById("RIGHT").innerHTML="RIGHTWARD";
+        SENSOR_VALUE(); //GET THE SENSOR VALUE FIRST
+
+        var request=new XMLHttpRequest();
+        nocache ="&nocache="+ Math.random() * 1000000;
+            request.onreadystatechange = function() {
+           if (this.readyState == 4 && this.status == 200) {
+              if(this.responseText!=null)
+            {document.getElementById("STATUS").innerHTML="STATUS: "+this.responseText;}
+            } 
+          };
+          request.open("GET", "right"+nocache, true);
+            request.send();
+            setTimeout("delay()",delay_time);
+        }
+
+        function delay()
+        {
+                    return 0;
+        }
+
+        function INIT()
+        {
+            SENSOR_VALUE();
+            HUMID_TEMP();
+
+
+        }
+
+
+</script>
+
+<head>
+    <title>BOT SERVER CONTROL</title>
+</head>
+
+<body onload="INIT();">
+
+<div style="position:absolute;left:20px">
+<h1 > BOT CONTROL </h1>
+<p id="STATUS"> STATUS: </p>
+</div> 
+
+<div style="position:absolute; top: 120px;left: 50px;">
+<p id="FRONT">   GAP:</p>
+<p><input type="button" onclick="FORWARD();" value="FORWARD"></p>
+</div>
+
+<div style="position:absolute; top: 200px;">
+<p id="LEFT">    GAP:</p>
+<p><input type="button" onclick="LEFT();" value="LEFT"></p>
+</div>
+
+<div style="position:absolute; top: 200px; left: 150px;">
+<p id="RIGHT">   GAP:</p>
+<p><input type="button" onclick="RIGHT();" value="RIGHT"></p>
+</div>
+
+<div style="position:absolute; top: 300px; left: 50px;">
+<p id="BACK">    GAP:</p>
+<p><input type="button" onclick="BACKWARD();"value="BACKWARD"></p>
+</div>
+
+
+<div style="position:absolute; top: 400px; left: 50px;">
+<p id="humid">    RELATIVE HUMIDITY:</p>
+<p id="temp">     TEMPERATURE(Celsius):</p>
+</div>
+
+</body>
+</html>
